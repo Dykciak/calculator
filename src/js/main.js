@@ -18,6 +18,7 @@ let doubleZero;
 let zero;
 let equal;
 let displayInput;
+const operators = ["+", "-", "*", "/"];
 
 const main = () => {
 	prepareDOMElements();
@@ -94,8 +95,31 @@ const handleKeyboardInput = (event) => {
 };
 
 const appendValue = (value) => {
-	display.value += value;
+	const lastChar = display.value.slice(-1);
+	if (value === ".") {
+		const parts = display.value.split(/[\+\-\*\/]/); // Split by operators
+		const lastPart = parts[parts.length - 1];
+
+		if (
+			lastChar === "" ||
+			operators.includes(lastChar) ||
+			lastPart.includes(".")
+		) {
+			return;
+		}
+	}
+
+	if (operators.includes(value)) {
+		if (operators.includes(lastChar) || lastChar === ".") {
+			display.value = display.value.slice(0, -1) + value;
+		} else {
+			display.value += value;
+		}
+	} else {
+		display.value += value;
+	}
 };
+
 function validateExpression(expression) {
 	const regex = /^(\d+(\.\d+)?)([+\-*/]\d+(\.\d+)?)*$/;
 	return regex.test(expression);
@@ -121,5 +145,11 @@ function calculate() {
 //         alert('Invalid Expression');
 //     }
 // }
+
+if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+	document.querySelectorAll(".input-color").forEach((element) => {
+		element.classList.add("ios-hover");
+	});
+}
 
 document.addEventListener("DOMContentLoaded", main);
