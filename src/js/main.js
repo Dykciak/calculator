@@ -146,10 +146,5 @@ function calculate() {
 //     }
 // }
 
-if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
-	document.querySelectorAll(".input-color").forEach((element) => {
-		element.classList.add("ios-hover");
-	});
-}
 
 document.addEventListener("DOMContentLoaded", main);
